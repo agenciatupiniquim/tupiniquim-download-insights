@@ -1,0 +1,87 @@
+.bdi-wrap .bdi-filters {
+	display: flex;
+	align-items: flex-end;
+	gap: 16px;
+	background: #fff;
+	padding: 16px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	margin: 16px 0;
+	flex-wrap: wrap;
+}
+
+.bdi-wrap .bdi-filters label {
+	display: flex;
+	flex-direction: column;
+	font-size: 12px;
+	font-weight: 600;
+	gap: 4px;
+}
+
+.bdi-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.bdi-card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.bdi-card-label {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #646970;
+}
+
+.bdi-card-value {
+	font-size: 32px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.bdi-card-value-small {
+	font-size: 20px;
+}
+
+.bdi-card-sub {
+	font-size: 12px;
+	color: #646970;
+}
+
+.bdi-panels {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: 16px;
+	margin-bottom: 16px;
+	align-items: start;
+}
+
+.bdi-panel {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 16px;
+}
+
+.bdi-panel-chart {
+	grid-column: 1 / -1;
+}
+
+.bdi-panel h2 {
+	margin-top: 0;
+}
+
+.bdi-pagination {
+	margin-top: 12px;
+	display: flex;
+	gap: 4px;
+}
