@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
@@ -38,12 +38,12 @@ class BDI_DB {
 			KEY downloaded_at (downloaded_at)
 		) {$charset_collate};";
 
-		dbDelta( $sql );
+		dbDelta($sql);
 
-		update_option( 'bdi_db_version', BDI_VERSION );
+		update_option('bdi_db_version', BDI_VERSION);
 	}
 
-	public static function insert_log( array $data ) {
+	public static function insert_log(array $data) {
 		global $wpdb;
 
 		$defaults = array(
@@ -54,12 +54,12 @@ class BDI_DB {
 			'order_id'      => 0,
 			'download_id'   => '',
 			'ip_address'    => '',
-			'downloaded_at' => current_time( 'mysql' ),
+			'downloaded_at' => current_time('mysql'),
 		);
 
-		$data = wp_parse_args( $data, $defaults );
+		$data = wp_parse_args($data, $defaults);
 
-		$wpdb->insert( self::table_name(), $data );
+		$wpdb->insert(self::table_name(), $data);
 
 		return $wpdb->insert_id;
 	}
@@ -67,63 +67,63 @@ class BDI_DB {
 	/**
 	 * Monta o WHERE comum (intervalo de datas + produto) usado nas queries do dashboard.
 	 */
-	protected static function build_where( $date_from = '', $date_to = '', $product_id = 0 ) {
+	protected static function build_where($date_from = '', $date_to = '', $product_id = 0) {
 		global $wpdb;
 
 		$where  = '1=1';
 		$params = array();
 
-		if ( $date_from ) {
+		if ($date_from) {
 			$where   .= ' AND downloaded_at >= %s';
 			$params[] = $date_from . ' 00:00:00';
 		}
 
-		if ( $date_to ) {
+		if ($date_to) {
 			$where   .= ' AND downloaded_at <= %s';
 			$params[] = $date_to . ' 23:59:59';
 		}
 
-		if ( $product_id ) {
+		if ($product_id) {
 			$where   .= ' AND product_id = %d';
 			$params[] = $product_id;
 		}
 
-		return array( $where, $params );
+		return array($where, $params);
 	}
 
-	public static function get_total_downloads( $date_from = '', $date_to = '', $product_id = 0 ) {
+	public static function get_total_downloads($date_from = '', $date_to = '', $product_id = 0) {
 		global $wpdb;
 		$table = self::table_name();
 
-		list( $where, $params ) = self::build_where( $date_from, $date_to, $product_id );
+		list($where, $params) = self::build_where($date_from, $date_to, $product_id);
 
 		$sql = "SELECT COUNT(*) FROM {$table} WHERE {$where}";
-		if ( $params ) {
-			$sql = $wpdb->prepare( $sql, $params );
+		if ($params) {
+			$sql = $wpdb->prepare($sql, $params);
 		}
 
-		return (int) $wpdb->get_var( $sql );
+		return (int) $wpdb->get_var($sql);
 	}
 
-	public static function get_unique_users( $date_from = '', $date_to = '', $product_id = 0 ) {
+	public static function get_unique_users($date_from = '', $date_to = '', $product_id = 0) {
 		global $wpdb;
 		$table = self::table_name();
 
-		list( $where, $params ) = self::build_where( $date_from, $date_to, $product_id );
+		list($where, $params) = self::build_where($date_from, $date_to, $product_id);
 
 		$sql = "SELECT COUNT(DISTINCT user_email) FROM {$table} WHERE {$where}";
-		if ( $params ) {
-			$sql = $wpdb->prepare( $sql, $params );
+		if ($params) {
+			$sql = $wpdb->prepare($sql, $params);
 		}
 
-		return (int) $wpdb->get_var( $sql );
+		return (int) $wpdb->get_var($sql);
 	}
 
-	public static function get_top_books( $limit = 10, $date_from = '', $date_to = '' ) {
+	public static function get_top_books($limit = 10, $date_from = '', $date_to = '') {
 		global $wpdb;
 		$table = self::table_name();
 
-		list( $where, $params ) = self::build_where( $date_from, $date_to );
+		list($where, $params) = self::build_where($date_from, $date_to);
 
 		$sql = "SELECT product_id, COUNT(*) as total
 				FROM {$table}
@@ -134,16 +134,16 @@ class BDI_DB {
 
 		$params[] = $limit;
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
+		return $wpdb->get_results($wpdb->prepare($sql, $params));
 	}
 
-	public static function get_recent_downloads( $per_page = 20, $page = 1, $date_from = '', $date_to = '', $product_id = 0 ) {
+	public static function get_recent_downloads($per_page = 20, $page = 1, $date_from = '', $date_to = '', $product_id = 0) {
 		global $wpdb;
 		$table = self::table_name();
 
-		list( $where, $params ) = self::build_where( $date_from, $date_to, $product_id );
+		list($where, $params) = self::build_where($date_from, $date_to, $product_id);
 
-		$offset = max( 0, ( $page - 1 ) * $per_page );
+		$offset = max(0, ($page - 1) * $per_page);
 
 		$sql = "SELECT * FROM {$table}
 				WHERE {$where}
@@ -153,17 +153,17 @@ class BDI_DB {
 		$params[] = $per_page;
 		$params[] = $offset;
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
+		return $wpdb->get_results($wpdb->prepare($sql, $params));
 	}
 
-	public static function get_recent_downloads_count( $date_from = '', $date_to = '', $product_id = 0 ) {
-		return self::get_total_downloads( $date_from, $date_to, $product_id );
+	public static function get_recent_downloads_count($date_from = '', $date_to = '', $product_id = 0) {
+		return self::get_total_downloads($date_from, $date_to, $product_id);
 	}
 
 	/**
 	 * Downloads por dia, para o gráfico de tendência.
 	 */
-	public static function get_downloads_by_day( $date_from, $date_to ) {
+	public static function get_downloads_by_day($date_from, $date_to) {
 		global $wpdb;
 		$table = self::table_name();
 
@@ -177,29 +177,29 @@ class BDI_DB {
 			$date_to . ' 23:59:59'
 		);
 
-		return $wpdb->get_results( $sql );
+		return $wpdb->get_results($sql);
 	}
 
 	/**
 	 * Todos os product_ids que já tiveram download (usado para agregar por autor em PHP,
 	 * já que autor pode ser taxonomia ou meta field, então não dá pra fazer JOIN direto).
 	 */
-	public static function get_download_counts_by_product( $date_from = '', $date_to = '' ) {
+	public static function get_download_counts_by_product($date_from = '', $date_to = '') {
 		global $wpdb;
 		$table = self::table_name();
 
-		list( $where, $params ) = self::build_where( $date_from, $date_to );
+		list($where, $params) = self::build_where($date_from, $date_to);
 
 		$sql = "SELECT product_id, COUNT(*) as total FROM {$table} WHERE {$where} GROUP BY product_id";
-		if ( $params ) {
-			$sql = $wpdb->prepare( $sql, $params );
+		if ($params) {
+			$sql = $wpdb->prepare($sql, $params);
 		}
 
-		$results = $wpdb->get_results( $sql );
+		$results = $wpdb->get_results($sql);
 
 		$map = array();
-		foreach ( $results as $row ) {
-			$map[ (int) $row->product_id ] = (int) $row->total;
+		foreach ($results as $row) {
+			$map[(int) $row->product_id] = (int) $row->total;
 		}
 
 		return $map;

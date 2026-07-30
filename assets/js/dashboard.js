@@ -1,22 +1,22 @@
-( function () {
+(function () {
 	'use strict';
 
-	document.addEventListener( 'DOMContentLoaded', function () {
-		var canvas = document.getElementById( 'bdi-chart-daily' );
-		var dataEl = document.getElementById( 'bdi-daily-data' );
+	document.addEventListener('DOMContentLoaded', function () {
+		var canvas = document.getElementById('bdi-chart-daily');
+		var dataEl = document.getElementById('bdi-daily-data');
 
-		if ( ! canvas || ! dataEl || typeof Chart === 'undefined' ) {
+		if (!canvas || !dataEl || typeof Chart === 'undefined') {
 			return;
 		}
 
 		var data;
 		try {
-			data = JSON.parse( dataEl.textContent );
-		} catch ( e ) {
+			data = JSON.parse(dataEl.textContent);
+		} catch (e) {
 			return;
 		}
 
-		new Chart( canvas.getContext( '2d' ), {
+		new Chart(canvas.getContext('2d'), {
 			type: 'line',
 			data: {
 				labels: data.labels,
@@ -42,6 +42,6 @@
 					},
 				},
 			},
-		} );
-	} );
-} )();
+		});
+	});
+})();
