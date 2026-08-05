@@ -51,7 +51,7 @@ class BDI_Admin {
 		wp_enqueue_style('bdi-admin', BDI_PLUGIN_URL . 'assets/css/dashboard.css', array(), BDI_VERSION);
 
 		if (strpos($hook, 'bdi-dashboard') !== false) {
-			wp_enqueue_script('chart-js', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js', array(), '4.4.4', true);
+			wp_enqueue_script('chart-js', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.min.js', array(), '4.5.0', true);
 			wp_enqueue_script('bdi-dashboard', BDI_PLUGIN_URL . 'assets/js/dashboard.js', array('chart-js', 'jquery'), BDI_VERSION, true);
 		}
 	}

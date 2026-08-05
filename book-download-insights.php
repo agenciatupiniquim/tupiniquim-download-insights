@@ -37,12 +37,12 @@ function bdi_init_plugin() {
 	}
 
 	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-db.php';
-	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-tracker.php';
+	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-manual-download.php';
 	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-author.php';
 	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-admin.php';
 	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-export.php';
 
-	BDI_Tracker::init();
+	BDI_Manual_Download::init();
 	BDI_Admin::init();
 	BDI_Export::init();
 }
