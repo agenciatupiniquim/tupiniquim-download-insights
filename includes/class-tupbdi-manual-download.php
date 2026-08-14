@@ -52,6 +52,7 @@ class ManualDownload {
 			return;
 		}
 
+		wp_enqueue_style('tupbdi-frontend-download-css', TUPBDI_PLUGIN_URL . 'assets/css/frontend.css', [], TUPBDI_VERSION);
 		wp_enqueue_script('tupbdi-frontend-download', TUPBDI_PLUGIN_URL . 'assets/js/frontend-download.js', [], TUPBDI_VERSION, true);
 
 		wp_localize_script(

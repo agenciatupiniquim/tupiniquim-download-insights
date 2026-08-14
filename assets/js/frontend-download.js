@@ -1,6 +1,37 @@
 (function () {
 	'use strict';
 
+	function setProcessingState(isProcessing, activeButton) {
+		var buttons = document.querySelectorAll('.tupbdi-download-button');
+		var wrapper = activeButton ? activeButton.closest('.tupbdi-download-buttons') : null;
+
+		if (wrapper) {
+			wrapper.classList.toggle('is-processing', isProcessing);
+		}
+
+		buttons.forEach(function (button) {
+			var isActiveButton = button === activeButton;
+			button.setAttribute('aria-disabled', isProcessing && isActiveButton ? 'true' : 'false');
+
+			if (isProcessing && isActiveButton) {
+				if (!button.dataset.originalText) {
+					button.dataset.originalText = button.textContent.trim();
+				}
+				button.disabled = true;
+				button.textContent = 'Processando...';
+				button.classList.add('is-processing');
+				return;
+			}
+
+			button.disabled = false;
+			button.classList.remove('is-processing');
+			if (button.dataset.originalText) {
+				button.textContent = button.dataset.originalText;
+				delete button.dataset.originalText;
+			}
+		});
+	}
+
 	/**
 	 * Chama o back-end para registrar o download e, se der certo, redireciona
 	 * pro arquivo. Exposta como window.tupbdiDownload pra você poder chamar
@@ -12,11 +43,13 @@
 	 *
 	 *   <button onclick="tupbdiDownload(123, 'abc123hash')">Baixar</button>
 	 */
-	function tupbdiDownload(productId, downloadKey) {
+	function tupbdiDownload(productId, downloadKey, activeButton) {
 		if (typeof TUPBDI_Download === 'undefined') {
 			console.error('Tupiniquim Book Downloads Insights: script não carregado nesta página.');
 			return;
 		}
+
+		setProcessingState(true, activeButton || document.querySelector('.tupbdi-download-button[data-product-id="' + productId + '"]'));
 
 		var formData = new FormData();
 		formData.append('action', 'tupbdi_log_download');
@@ -38,14 +71,17 @@
 			.then(function (result) {
 				if (result.success && result.data && result.data.download_url) {
 					window.location.href = result.data.download_url;
-				} else {
-					var message = result.data && result.data.message ? result.data.message : 'Erro ao registrar o download.';
-					console.error('Tupiniquim Book Downloads Insights:', message);
-					window.alert(message);
+					return;
 				}
+
+				var message = result.data && result.data.message ? result.data.message : 'Erro ao registrar o download.';
+				console.error('Tupiniquim Book Downloads Insights:', message);
+				window.alert(message);
+				setProcessingState(false);
 			})
 			.catch(function () {
 				window.alert('Não foi possível iniciar o download. Tente novamente.');
+				setProcessingState(false);
 			});
 	}
 
@@ -58,7 +94,7 @@
 			button.addEventListener('click', function () {
 				var productId = button.getAttribute('data-product-id');
 				var downloadKey = button.getAttribute('data-download-key') || '';
-				tupbdiDownload(productId, downloadKey);
+				tupbdiDownload(productId, downloadKey, button);
 			});
 		});
 	});
