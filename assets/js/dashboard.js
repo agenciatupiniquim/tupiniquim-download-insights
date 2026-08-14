@@ -2,8 +2,8 @@
 	'use strict';
 
 	document.addEventListener('DOMContentLoaded', function () {
-		var canvas = document.getElementById('bdi-chart-daily');
-		var dataEl = document.getElementById('bdi-daily-data');
+		var canvas = document.getElementById('tupbdi-chart-daily');
+		var dataEl = document.getElementById('tupbdi-daily-data');
 
 		if (!canvas || !dataEl || typeof Chart === 'undefined') {
 			return;

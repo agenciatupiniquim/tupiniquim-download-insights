@@ -1,58 +1,67 @@
 <?php
 
 /**
- * Plugin Name: Book Download Insights
+ * Plugin Name: Tupiniquim Book Downloads Insights
  * Plugin URI:  https://tupiniquim.example/book-download-insights
  * Description: Dashboard de analytics para downloads de livros gratuitos vendidos via WooCommerce. Registra quem baixou, qual livro, autor mais baixado e mais.
  * Version:     1.0.0
  * Author:      Agência Tupiniquim
- * Text Domain: book-download-insights
+ * Text Domain: tupiniquim-book-downloads-insights
  * Requires Plugins: woocommerce
  */
 
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
 	exit; // Bloqueia acesso direto.
 }
 
-define('BDI_VERSION', '1.0.0');
-define('BDI_PLUGIN_FILE', __FILE__);
-define('BDI_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('BDI_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('TUPBDI_VERSION', '1.0.0');
+define('TUPBDI_PLUGIN_FILE', __FILE__);
+define('TUPBDI_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('TUPBDI_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 /**
  * Verifica se o WooCommerce está ativo antes de carregar qualquer coisa.
+ *
+ * @return void
  */
-function bdi_woocommerce_missing_notice() {
+function tupbdi_woocommerce_missing_notice(): void {
 ?>
 	<div class="notice notice-error">
-		<p><?php esc_html_e('Book Download Insights precisa do WooCommerce ativo para funcionar.', 'book-download-insights'); ?></p>
+		<p><?php esc_html_e('Tupiniquim Book Downloads Insights precisa do WooCommerce ativo para funcionar.', 'tupiniquim-book-downloads-insights'); ?></p>
 	</div>
 <?php
 }
 
-function bdi_init_plugin() {
-	if (! class_exists('WooCommerce')) {
-		add_action('admin_notices', 'bdi_woocommerce_missing_notice');
+/**
+ * Inicializa o plugin após verificar dependências.
+ *
+ * @return void
+ */
+function tupbdi_init_plugin(): void {
+	if (!class_exists('WooCommerce')) {
+		add_action('admin_notices', 'tupbdi_woocommerce_missing_notice');
 		return;
 	}
 
-	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-db.php';
-	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-manual-download.php';
-	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-author.php';
-	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-admin.php';
-	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-export.php';
+	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-db.php';
+	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-manual-download.php';
+	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-author.php';
+	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-admin.php';
+	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-export.php';
 
-	BDI_Manual_Download::init();
-	BDI_Admin::init();
-	BDI_Export::init();
+	Tupiniquim\BookDownloadsInsights\ManualDownload::init();
+	Tupiniquim\BookDownloadsInsights\Admin::init();
+	Tupiniquim\BookDownloadsInsights\Export::init();
 }
-add_action('plugins_loaded', 'bdi_init_plugin');
+add_action('plugins_loaded', 'tupbdi_init_plugin');
 
 /**
  * Cria a tabela customizada na ativação do plugin.
+ *
+ * @return void
  */
-function bdi_activate_plugin() {
-	require_once BDI_PLUGIN_DIR . 'includes/class-bdi-db.php';
-	BDI_DB::create_table();
+function tupbdi_activate_plugin(): void {
+	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-db.php';
+	Tupiniquim\BookDownloadsInsights\DB::create_table();
 }
-register_activation_hook(__FILE__, 'bdi_activate_plugin');
+register_activation_hook(__FILE__, 'tupbdi_activate_plugin');

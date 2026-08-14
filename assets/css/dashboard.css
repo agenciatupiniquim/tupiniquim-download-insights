@@ -1,4 +1,4 @@
-.bdi-wrap .bdi-filters {
+.tupbdi-wrap .tupbdi-filters {
 	display: flex;
 	align-items: flex-end;
 	gap: 16px;
@@ -10,7 +10,7 @@
 	flex-wrap: wrap;
 }
 
-.bdi-wrap .bdi-filters label {
+.tupbdi-wrap .tupbdi-filters label {
 	display: flex;
 	flex-direction: column;
 	font-size: 12px;
@@ -18,14 +18,14 @@
 	gap: 4px;
 }
 
-.bdi-cards {
+.tupbdi-cards {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 	gap: 16px;
 	margin-bottom: 16px;
 }
 
-.bdi-card {
+.tupbdi-card {
 	background: #fff;
 	border: 1px solid #dcdcde;
 	border-radius: 4px;
@@ -35,29 +35,29 @@
 	gap: 4px;
 }
 
-.bdi-card-label {
+.tupbdi-card-label {
 	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
 	color: #646970;
 }
 
-.bdi-card-value {
+.tupbdi-card-value {
 	font-size: 32px;
 	font-weight: 600;
 	color: #1d2327;
 }
 
-.bdi-card-value-small {
+.tupbdi-card-value-small {
 	font-size: 20px;
 }
 
-.bdi-card-sub {
+.tupbdi-card-sub {
 	font-size: 12px;
 	color: #646970;
 }
 
-.bdi-panels {
+.tupbdi-panels {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 	gap: 16px;
@@ -65,22 +65,22 @@
 	align-items: start;
 }
 
-.bdi-panel {
+.tupbdi-panel {
 	background: #fff;
 	border: 1px solid #dcdcde;
 	border-radius: 4px;
 	padding: 16px;
 }
 
-.bdi-panel-chart {
+.tupbdi-panel-chart {
 	grid-column: 1 / -1;
 }
 
-.bdi-panel h2 {
+.tupbdi-panel h2 {
 	margin-top: 0;
 }
 
-.bdi-pagination {
+.tupbdi-pagination {
 	margin-top: 12px;
 	display: flex;
 	gap: 4px;
