@@ -49,6 +49,7 @@ function tupbdi_init_plugin(): void {
 	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-admin.php';
 	require_once TUPBDI_PLUGIN_DIR . 'includes/class-tupbdi-export.php';
 
+	Tupiniquim\BookDownloadsInsights\DB::ensure_table_columns();
 	Tupiniquim\BookDownloadsInsights\ManualDownload::init();
 	Tupiniquim\BookDownloadsInsights\Admin::init();
 	Tupiniquim\BookDownloadsInsights\Export::init();

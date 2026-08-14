@@ -47,6 +47,7 @@ class DB {
 			product_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
 			order_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
 			download_id VARCHAR(50) NOT NULL DEFAULT '',
+			file_name VARCHAR(190) NOT NULL DEFAULT '',
 			ip_address VARCHAR(100) NOT NULL DEFAULT '',
 			downloaded_at DATETIME NOT NULL,
 			PRIMARY KEY  (id),
@@ -56,8 +57,38 @@ class DB {
 		) {$charset_collate};";
 
 		dbDelta($sql);
+		self::ensure_table_columns();
 
 		update_option('tupbdi_db_version', TUPBDI_VERSION);
+	}
+
+	/**
+	 * Garante que colunas extras do log existam em instalações existentes.
+	 *
+	 * @return void
+	 */
+	public static function ensure_table_columns(): void {
+		global $wpdb;
+
+		$table_name = self::table_name();
+		$columns    = $wpdb->get_results("SHOW COLUMNS FROM {$table_name}", ARRAY_A);
+
+		if (!$columns) {
+			return;
+		}
+
+		$existing = [];
+		foreach ($columns as $column) {
+			$existing[] = $column['Field'];
+		}
+
+		if (!in_array('download_id', $existing, true)) {
+			$wpdb->query("ALTER TABLE {$table_name} ADD COLUMN download_id VARCHAR(50) NOT NULL DEFAULT ''");
+		}
+
+		if (!in_array('file_name', $existing, true)) {
+			$wpdb->query("ALTER TABLE {$table_name} ADD COLUMN file_name VARCHAR(190) NOT NULL DEFAULT ''");
+		}
 	}
 
 	/**

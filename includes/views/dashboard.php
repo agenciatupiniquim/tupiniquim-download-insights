@@ -156,6 +156,7 @@ if (!defined('ABSPATH')) {
 					<th><?php esc_html_e('Usuário', 'tupiniquim-book-downloads-insights'); ?></th>
 					<th><?php esc_html_e('E-mail', 'tupiniquim-book-downloads-insights'); ?></th>
 					<th><?php esc_html_e('Livro', 'tupiniquim-book-downloads-insights'); ?></th>
+					<th><?php esc_html_e('Arquivo', 'tupiniquim-book-downloads-insights'); ?></th>
 					<th><?php esc_html_e('Autor', 'tupiniquim-book-downloads-insights'); ?></th>
 					<th><?php esc_html_e('Pedido', 'tupiniquim-book-downloads-insights'); ?></th>
 				</tr>
@@ -163,7 +164,7 @@ if (!defined('ABSPATH')) {
 			<tbody>
 				<?php if (!$recent) : ?>
 					<tr>
-						<td colspan="6"><?php esc_html_e('Nenhum download registrado no período.', 'tupiniquim-book-downloads-insights'); ?></td>
+						<td colspan="7"><?php esc_html_e('Nenhum download registrado no período.', 'tupiniquim-book-downloads-insights'); ?></td>
 					</tr>
 				<?php endif; ?>
 				<?php foreach ($recent as $row) : ?>
@@ -172,6 +173,7 @@ if (!defined('ABSPATH')) {
 						<td><?php echo esc_html($row->user_name); ?></td>
 						<td><?php echo esc_html($row->user_email); ?></td>
 						<td><?php echo esc_html(get_the_title($row->product_id)); ?></td>
+						<td><?php echo esc_html($row->file_name ?: ($row->download_id ?: __('Arquivo não informado', 'tupiniquim-book-downloads-insights'))); ?></td>
 						<td><?php echo esc_html(\Tupiniquim\BookDownloadsInsights\Author::get_display_authors($row->product_id)); ?></td>
 						<td>
 							<?php if ($row->order_id) : ?>

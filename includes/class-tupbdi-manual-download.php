@@ -86,6 +86,11 @@ class ManualDownload {
 			return '';
 		}
 
+		$downloads = $product->get_downloads();
+		if (!$downloads) {
+			return '';
+		}
+
 		$atts = shortcode_atts(
 			[
 				'text' => __('Baixar livro', 'tupiniquim-book-downloads-insights'),
@@ -93,11 +98,47 @@ class ManualDownload {
 			$atts
 		);
 
-		return sprintf(
-			'<button type="button" class="tupbdi-download-button button" data-product-id="%d">%s</button>',
-			esc_attr($product->get_id()),
-			esc_html($atts['text'])
-		);
+		$buttons = [];
+		foreach ($downloads as $download_key => $download_file) {
+			$label = self::get_download_button_label($download_file, $atts['text']);
+			$buttons[] = sprintf(
+				'<button type="button" class="tupbdi-download-button button" data-product-id="%d" data-download-key="%s">%s</button>',
+				esc_attr($product->get_id()),
+				esc_attr($download_key),
+				esc_html($label)
+			);
+		}
+
+		if (!$buttons) {
+			return '';
+		}
+
+		return '<div class="tupbdi-download-buttons">' . implode('', $buttons) . '</div>';
+	}
+
+	/**
+	 * Retorna o texto do botão para cada arquivo de download.
+	 *
+	 * @param \WC_Product_Download $download_file Arquivo de download do WooCommerce.
+	 * @param string               $fallback_text Texto padrão do shortcode.
+	 *
+	 * @return string
+	 */
+	protected static function get_download_button_label($download_file, string $fallback_text): string {
+		$name = strtolower((string) $download_file->get_name());
+		$name = preg_replace('/[^a-z0-9]+/i', ' ', $name);
+		$name = trim($name);
+
+		switch (true) {
+			case $name === '':
+				return $fallback_text;
+			case strpos($name, 'pdf') !== false:
+				return __('Download do PDF', 'tupiniquim-book-downloads-insights');
+			case strpos($name, 'epub') !== false || strpos($name, 'e pub') !== false:
+				return __('Download do Epub', 'tupiniquim-book-downloads-insights');
+			default:
+				return sprintf(__('Download do %s', 'tupiniquim-book-downloads-insights'), ucfirst($name));
+		}
 	}
 
 	/**
@@ -152,6 +193,7 @@ class ManualDownload {
 				'product_id'    => $product_id,
 				'order_id'      => 0,
 				'download_id'   => $file->get_id(),
+				'file_name'     => $file->get_name() ?: (string) $download_key,
 				'ip_address'    => self::get_client_ip(),
 				'downloaded_at' => current_time('mysql'),
 			]
