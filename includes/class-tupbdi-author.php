@@ -23,14 +23,10 @@ class Author {
 	 * @return array<string, string> Array com 'type' ('taxonomy' ou 'meta') e 'key' (nome do campo).
 	 */
 	public static function get_settings(): array {
-		$defaults = [
-			'type' => 'taxonomy', // 'taxonomy' ou 'meta'
-			'key'  => 'autor',
+		return [
+			'type' => 'taxonomy',
+			'key'  => 'authors',
 		];
-
-		$saved = get_option('tupbdi_author_settings', []);
-
-		return wp_parse_args($saved, $defaults);
 	}
 
 	/**
