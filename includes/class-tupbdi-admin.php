@@ -112,6 +112,8 @@ class Admin {
 		$top_author           = $by_author ? array_key_first($by_author) : '';
 		$top_author_total     = $by_author ? reset($by_author) : 0;
 
+		$top_users = DB::get_top_users(10, $filters['date_from'], $filters['date_to'], $filters['product_id']);
+
 		$per_page       = 20;
 		$recent         = DB::get_recent_downloads($per_page, $filters['paged'], $filters['date_from'], $filters['date_to'], $filters['product_id']);
 		$recent_total   = DB::get_recent_downloads_count($filters['date_from'], $filters['date_to'], $filters['product_id']);

@@ -10,6 +10,7 @@ if (!defined('ABSPATH')) {
  * @var array  $by_author
  * @var string $top_author
  * @var int    $top_author_total
+ * @var array  $top_users
  * @var array  $recent
  * @var int    $total_pages
  * @var array  $daily
@@ -97,7 +98,6 @@ if (!defined('ABSPATH')) {
 				<thead>
 					<tr>
 						<th><?php esc_html_e('Livro', 'tupiniquim-book-downloads-insights'); ?></th>
-						<th><?php esc_html_e('Autor', 'tupiniquim-book-downloads-insights'); ?></th>
 						<th><?php esc_html_e('Downloads', 'tupiniquim-book-downloads-insights'); ?></th>
 					</tr>
 				</thead>
@@ -110,7 +110,6 @@ if (!defined('ABSPATH')) {
 					<?php foreach ($top_books_raw as $row) : ?>
 						<tr>
 							<td><?php echo esc_html(get_the_title($row->product_id)); ?></td>
-							<td><?php echo esc_html(\Tupiniquim\BookDownloadsInsights\Author::get_display_authors($row->product_id)); ?></td>
 							<td><?php echo esc_html(number_format_i18n($row->total)); ?></td>
 						</tr>
 					<?php endforeach; ?>
@@ -140,6 +139,31 @@ if (!defined('ABSPATH')) {
 						<tr>
 							<td><?php echo esc_html($author); ?></td>
 							<td><?php echo esc_html(number_format_i18n($total)); ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="tupbdi-panel">
+			<h2><?php esc_html_e('Top usuários', 'tupiniquim-book-downloads-insights'); ?></h2>
+			<table class="widefat striped">
+				<thead>
+					<tr>
+						<th><?php esc_html_e('Usuário', 'tupiniquim-book-downloads-insights'); ?></th>
+						<th><?php esc_html_e('Downloads', 'tupiniquim-book-downloads-insights'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if (!$top_users) : ?>
+						<tr>
+							<td colspan="2"><?php esc_html_e('Nenhum download registrado no período.', 'tupiniquim-book-downloads-insights'); ?></td>
+						</tr>
+					<?php endif; ?>
+					<?php foreach ($top_users as $user) : ?>
+						<tr>
+							<td><?php echo esc_html($user->user_name); ?></td>
+							<td><?php echo esc_html(number_format_i18n($user->total)); ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>

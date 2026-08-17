@@ -326,4 +326,32 @@ class DB {
 
 		return $map;
 	}
+
+	/**
+	 * Obtém os usuários com mais downloads em um período.
+	 *
+	 * @param int    $limit     Número máximo de resultados.
+	 * @param string $date_from Data inicial no formato 'Y-m-d' (opcional).
+	 * @param string $date_to   Data final no formato 'Y-m-d' (opcional).
+	 * @param int    $product_id ID do produto para filtrar (opcional).
+	 *
+	 * @return array<\stdClass> Array com objects contendo user_name, user_email e total.
+	 */
+	public static function get_top_users(int $limit = 10, string $date_from = '', string $date_to = '', int $product_id = 0): array {
+		global $wpdb;
+		$table = self::table_name();
+
+		[$where, $params] = self::build_where($date_from, $date_to, $product_id);
+
+		$sql = "SELECT user_name, user_email, COUNT(*) as total
+				FROM {$table}
+				WHERE {$where}
+				GROUP BY user_email
+				ORDER BY total DESC
+				LIMIT %d";
+
+		$params[] = $limit;
+
+		return $wpdb->get_results($wpdb->prepare($sql, $params)) ?: [];
+	}
 }
