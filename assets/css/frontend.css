@@ -1,7 +1,7 @@
 .tupbdi-download-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
 }
 
 .tupbdi-download-buttons.is-processing {

@@ -136,7 +136,11 @@ class ManualDownload {
 			case strpos($name, 'pdf') !== false:
 				return __('Download do PDF', 'tupiniquim-book-downloads-insights');
 			case strpos($name, 'epub') !== false || strpos($name, 'e pub') !== false:
-				return __('Download do Epub', 'tupiniquim-book-downloads-insights');
+				return __('Download do EPUB', 'tupiniquim-book-downloads-insights');
+			case strpos($name, 'comprar') !== false:
+				return __('Comprar', 'tupiniquim-book-downloads-insights');
+			case strpos($name, 'urulimpressao') !== false:
+				return __('Impressão sob demanda', 'tupiniquim-book-downloads-insights');
 			default:
 				return sprintf(__('Download do %s', 'tupiniquim-book-downloads-insights'), ucfirst($name));
 		}
