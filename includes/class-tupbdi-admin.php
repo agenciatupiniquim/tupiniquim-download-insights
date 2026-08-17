@@ -73,7 +73,7 @@ class Admin {
 
 		wp_enqueue_style('tupbdi-admin', TUPBDI_PLUGIN_URL . 'assets/css/dashboard.css', [], TUPBDI_VERSION);
 
-		wp_enqueue_script('chart-js', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.min.js', [], '4.5.0', true);
+		wp_enqueue_script('chart-js', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js', [], '4.5.0', true);
 		wp_enqueue_script('tupbdi-dashboard', TUPBDI_PLUGIN_URL . 'assets/js/dashboard.js', ['chart-js', 'jquery'], TUPBDI_VERSION, true);
 	}
 
