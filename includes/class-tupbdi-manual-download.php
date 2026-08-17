@@ -154,6 +154,10 @@ class ManualDownload {
 	public static function handle_ajax(): void {
 		check_ajax_referer(self::NONCE_ACTION, 'nonce');
 
+		if (!is_user_logged_in()) {
+			wp_send_json_error(['message' => __('Você precisa estar autenticado para acessar o livro.', 'tupiniquim-book-downloads-insights')], 400);
+		}
+
 		$product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
 
 		if (!$product_id) {
